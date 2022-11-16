@@ -1,2 +1,2 @@
-# potd
+# POTD - Leetcode
  practice question
