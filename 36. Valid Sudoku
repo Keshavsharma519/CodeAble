@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        for (int i = 0; i < 9; ++i) {
+            set<char> row, col, cub;
+            int rowIdx = 3*(i/3), colIdx = 3*(i%3);
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] != '.' && row.count(board[i][j])) return false;
+                row.insert(board[i][j]);
+                if (board[j][i] != '.' && col.count(board[j][i])) return false;
+                col.insert(board[j][i]);
+                if (board[rowIdx+j/3][colIdx+j%3] != '.' && cub.count(board[rowIdx+j/3][colIdx+j%3])) return false;
+                cub.insert(board[rowIdx+j/3][colIdx+j%3]);
+            }
+        }
+        return true;
+    }
+};
