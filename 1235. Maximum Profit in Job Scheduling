@@ -1,0 +1,43 @@
+class Solution {
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        Map<Integer, Integer> coordToMax = new HashMap<>();
+        int max = 0;
+        
+        Map<Integer, Point> coordToPointmap = new HashMap<>();
+        PriorityQueue<Point>pq = new PriorityQueue<>((p1,p2)-> p1.coord - p2.coord);
+        
+        for (int i=0;i<startTime.length;i++) putIntoPQ(pq, coordToPointmap, startTime[i], i, true);
+        for (int i=0;i<endTime.length;i++) putIntoPQ(pq, coordToPointmap, endTime[i], i, false);
+        
+        
+        while (!pq.isEmpty()){
+            Point p = pq.poll();
+            if (coordToMax.containsKey(p.coord)){
+                max = Math.max(max, coordToMax.get(p.coord));
+                coordToMax.remove(p.coord);
+            }
+            for (int i: p.begins){
+                coordToMax.putIfAbsent(endTime[i], 0);
+                coordToMax.put(endTime[i],Math.max(max+profit[i], coordToMax.get(endTime[i])));
+            }
+        }
+        return max;
+    }
+    
+    public void putIntoPQ(PriorityQueue<Point>pq , Map<Integer, Point> coordToPointmap , int e, int i, boolean adds){
+        if (!coordToPointmap.containsKey(e)) {
+            coordToPointmap.put(e, new Point(e));
+            pq.add(coordToPointmap.get(e));
+       }
+        if (adds)coordToPointmap.get(e).begins.add(i);
+    }
+}
+
+class Point{
+    int coord;
+    Set<Integer> begins; //indices, not coordinates 
+    public Point(int coord){
+        this.coord = coord;
+       this.begins = new HashSet<>();
+    }
+}
