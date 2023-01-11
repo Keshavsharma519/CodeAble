@@ -1,0 +1,17 @@
+class Solution {
+  public:
+    long long int minIncrements(vector<int> arr, int N) {
+        // Code here
+         sort(arr.begin(), arr.end()); // sort the array
+    int ans = 0; // variable to keep track of increment operations
+    for (int i = 1; i < N; i++) {
+        if (arr[i] <= arr[i-1]) {
+          // if the current element is not greater than the previous one,
+          // increment the current element and add the increment to the answer
+          ans += (arr[i-1] - arr[i] + 1);
+          arr[i] = arr[i-1] + 1;
+        }
+    }
+    return ans;
+    }
+};
