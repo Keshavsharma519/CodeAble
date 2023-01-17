@@ -1,0 +1,93 @@
+class Solution
+
+{
+
+public:
+
+    void solve(Node *root,int &ans,int &b)
+
+    {
+
+        if(root==NULL)
+
+        {
+
+           
+
+            return ;
+
+        }
+
+       
+
+        if(root->left!=NULL && root->right!=NULL )
+
+        {
+
+            int x=__gcd(root->left->data,root->right->data);
+
+            if(x>ans)
+
+            {
+
+                b=root->data;
+
+                ans=x;
+
+            }
+
+            else if(x==ans)
+
+            {
+
+                if(b<(root->data))
+
+                {
+
+                    b=root->data;
+
+                }
+
+            }
+
+ 
+
+        }
+
+        solve(root->left,ans,b);
+
+         solve(root->right,ans,b);
+
+        
+
+        return ;
+
+         
+
+    }
+
+    int maxGCD( Node* root)
+
+    {
+
+        if(root==NULL)
+
+        {
+
+            return -1;
+
+        }
+
+        int ans=0,b=0;
+
+        solve(root,ans,b);
+
+        return b;
+
+        
+
+        //code here
+
+    }
+
+};
