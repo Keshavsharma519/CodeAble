@@ -1,0 +1,13 @@
+class Solution{
+    public:
+    int solve(int a,int b,int c,int d)
+    {
+        int cnt=0;
+        while(a>c) a/=2,cnt++;
+        while(b>d) b/=2,cnt++;
+        return cnt;
+    }
+    int carpetBox(int A, int B, int C, int D){
+        return min(solve(A,B,C,D),solve(B,A,C,D));
+    }
+};
