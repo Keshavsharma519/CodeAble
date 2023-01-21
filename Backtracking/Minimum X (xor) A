@@ -1,0 +1,49 @@
+class Solution {
+  public:
+    int minVal(int a, int b) {
+        int aOne = __builtin_popcount(a);
+        int bOne = __builtin_popcount(b);
+     
+        if(aOne == bOne)
+         return a;
+        string bin = "";
+        while(a){
+            if(a&1)
+             bin += '1';
+            else
+             bin += '0';
+            a = a>>1;
+        }
+        reverse(bin.begin(), bin.end());
+     
+        string ans = "";
+        int n = bin.size();
+        for(int i=0; i<n; i++){
+            if(bin[i] == '0')
+               ans+= '0';
+            else if(bin[i]=='1' && bOne){
+                ans += '1';
+                bOne--;
+            }else if(bin[i] == '1' && bOne ==0){
+                ans += '0';
+            }
+        }
+    
+        if(bOne ==0){
+              return stoi(ans, 0, 2);
+        }
+        else{
+           reverse(ans.begin(), ans.end());
+           for(int i=0; i<31 && bOne; i++){
+               if(ans[i] == '0'){
+                 ans[i] = '1';
+                 bOne--;
+               }
+           }
+           reverse(ans.begin(), ans.end());
+        }
+        while(bOne--)
+         ans += '1';
+       return stoi(ans, 0, 2);
+    }
+};
