@@ -1,0 +1,31 @@
+class Solution {
+  public:
+    string removePair(string s) {
+        // code here
+        stack<char> st;
+        string ans;
+        st.push(s[0]);
+        for(int i=1;i<s.length();i++){
+            if(st.empty()){
+                st.push(s[i]);
+                continue;
+            }
+            if(s[i]==st.top()){
+                st.pop();
+                continue;
+            }
+            st.push(s[i]);
+            
+        }
+        
+        if(st.empty())
+            return "-1";
+        
+        while(!st.empty()){
+            ans.push_back(st.top());
+            st.pop();
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
