@@ -1,0 +1,55 @@
+class Solution {
+public:
+
+    void leftTraverse(Node *root, vector<int> &ans){
+        if((root== NULL) || (root->left == NULL && root->right == NULL)){
+            return;
+        }
+        ans.push_back(root->data);
+        if(root->left)
+            leftTraverse(root->left, ans);
+        else
+            leftTraverse(root->right, ans) ;
+    }
+    
+    void LeafNode(Node *root, vector<int> &ans){
+        if(root== NULL) return ;
+        
+        if(root->left==0 && root->right == NULL )
+            ans.push_back(root->data);
+            
+        
+        LeafNode(root->left,ans);
+        LeafNode(root->right,ans);
+    }
+    
+    void rightTraverasl(Node *root, vector <int> &ans){
+        if ((root == NULL) || (root->left == NULL && root->right == NULL)) return;
+        
+        if(root->right)
+            rightTraverasl(root->right, ans);
+        else rightTraverasl(root-> left, ans);
+        
+        ans.push_back(root->data);
+    }
+    
+    vector <int> boundary(Node *root)
+    {
+        vector<int> ans;
+        if(root == NULL) return ans;
+        
+        ans.push_back(root->data);
+        
+        // Left wala part
+        leftTraverse(root->left,ans);
+        
+        // Leaf Node Wala part
+        LeafNode(root->left,ans);
+        LeafNode(root->right,ans);
+        
+        // Right part
+        rightTraverasl(root->right, ans);
+        
+        return ans;
+    }
+};
