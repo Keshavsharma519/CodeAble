@@ -1,0 +1,42 @@
+class Solution
+{
+    public:
+    pair<bool,int> isSumfast(Node* root){
+        
+        // Base Case
+        // For NULL Node
+        if(root == NULL ){
+            pair<bool,int> p = make_pair(true,0);
+            return p;
+        } 
+        // For Leaf Node
+        if(root->left ==NULL && root->right == NULL){
+            pair<bool,int> p = make_pair(true,root->data);
+            return p;
+        } 
+        
+        pair<bool,int> left = isSumfast(root->left);
+        pair<bool,int> right = isSumfast(root->right);
+        
+        
+        bool leftans = left.first;
+        bool Rightans = right.first;
+        bool sum = left.second + right.second == root->data;
+        
+        pair<bool,int> ans;
+        
+        
+        if(leftans && Rightans && sum){
+            ans.first = true;
+            ans.second = left.second + right.second + root->data; // 2*root->data
+        }
+        else{
+            ans.first=false;
+        }
+        return ans;
+    }
+    bool isSumTree(Node* root)
+    {
+         return isSumfast(root).first;
+    }
+};
