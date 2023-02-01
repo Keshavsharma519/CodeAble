@@ -1,0 +1,34 @@
+class Solution {
+public:
+    void solve(TreeNode* root, int k, int &count, vector<int> path){
+        // base case
+        if(root == NULL) return;
+
+        // Humne vector meh root->data push krdiya
+        path.push_back(root->val);
+
+        // Ab humme left jana h 
+        solve(root->left,k,count,path);
+        // Ab humme Right jaana h
+        solve(root->right,k,count,path);
+
+        //Leaf Node TaK traverse krliya 
+        // Vector ready h aur usme humko Target sum Check Krna h 
+
+        long long int sum=0,n=path.size();
+        for(int i=n-1;i>=0;i--){ // Traversing from the last
+            sum += path[i];
+            if(sum == k) count++;
+        }
+
+        //jese hi hum return krenge humko vector meh se last element hatana bhi padega 
+        path.pop_back();
+    }
+    int pathSum(TreeNode* root, int targetSum) {
+        vector <int> path;
+        int count =0;
+        solve(root,targetSum,count,path);
+        return count;
+        
+    }
+};
