@@ -1,0 +1,32 @@
+Node* maxval(Node* root){
+    if( root -> right == NULL) return root;
+    maxval(root->right);
+}
+
+Node* minval(Node* root){
+    if(root ->left == NULL) return root;
+    minval(root->left);
+}
+
+
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+{
+   if(root == NULL) return;
+   
+   // if key is present
+   if(root->key == key){
+       if(root->left !=NULL) pre = maxval(root->left);
+       if(root->right != NULL) suc = minval(root->right);
+       return;
+   }
+   else if(root->key>key){
+       // Left part meh jana h 
+       suc = root;
+       findPreSuc(root->left,pre,suc,key);
+   }
+   else{
+       // right meh jana h 
+       pre = root;
+       findPreSuc(root->right,pre,suc,key);
+   }
+}
