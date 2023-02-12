@@ -1,0 +1,55 @@
+class Solution{
+public:
+    bool check_prime(int val){
+        int value=sqrt(val);
+        for(int i=2;i<=value;i++){
+            if(val%i==0) return false;
+        }
+        return true;
+    }
+    int find_prime_before(int val){
+        for(int i=val-1;i>=2;i--){
+            int temp=1,value=sqrt(i);
+            for(int j=2;j<=value;j++){
+                if(i%j==0){
+                    temp=0;
+                    break;
+                }
+            }if(temp) return i;
+        }return -1;
+        
+    }
+    int find_prime_after(int val){
+        int i=val+1;
+        while(1){
+            int temp=1,value=sqrt(i);
+            for(int j=2;j<=value;j++){
+                if(i%j==0){
+                    temp=0;
+                    break;
+                }
+            }if(temp) return i;
+            i+=1;
+        }return -1;
+    }
+
+    Node *primeList(Node *head){
+        Node *cur=head;
+        while(cur!=NULL){
+            if(cur->val==1) cur->val=2;
+            else{
+                bool check=check_prime(cur->val);
+                if(!check){
+                    int before=find_prime_before(cur->val);
+                    int after=find_prime_after(cur->val);
+                    if(cur->val-before==after-cur->val) cur->val=before;
+                    else if(cur->val-before<after-cur->val) cur->val=before;
+                    else cur->val=after;
+                }
+            }
+            cur=cur->next;
+        }
+        return head;
+    }
+
+};
