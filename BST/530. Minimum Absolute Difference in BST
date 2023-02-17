@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void inorder(TreeNode* root,TreeNode* &pre,int &minDiff ){
+
+        if(root==NULL) return;
+
+        inorder(root->left,pre,minDiff);
+        if(pre != NULL){
+            minDiff = min(minDiff,root->val - pre->val);
+        }
+        pre = root;
+        
+        inorder(root->right,pre,minDiff);
+    }
+
+    int getMinimumDifference(TreeNode* root) {
+        
+        TreeNode* pre = NULL;
+        int minDiff = INT_MAX;
+        inorder(root,pre,minDiff);
+
+        return minDiff;
+        
+    }
+};
