@@ -1,0 +1,13 @@
+bool isCircular(Node *head)
+{
+   //since in the question it is given that empty list is considered as circular
+   if(head == NULL) return true; 
+   Node* temp = head->next;
+   
+   while(temp != NULL && temp != head){
+       temp = temp->next;
+   }
+   
+   if(temp == NULL) return false;
+   if(temp == head) return true;
+}
