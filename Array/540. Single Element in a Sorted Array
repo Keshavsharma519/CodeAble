@@ -1,0 +1,26 @@
+class Solution {
+public:
+
+    int singleNonDuplicate(vector<int>& nums) {
+        int s = 0;
+        int e = nums.size() - 2; // Second last Index
+        int mid = (s+e)/2;
+        while(s<=e){
+            // checking left part or not
+            if(nums[mid] == nums[mid^1]){
+                s = mid+1;  
+            }
+            else{
+                e = mid-1;
+            }
+            mid = (s+e)/2;
+        }
+        return nums[s];
+    }
+};
+
+
+// For Left part
+// 1st instance -- even
+// 2nd instance -- odd 
+// I Need to check on the left wheather the 1st instance of that number is there or not
