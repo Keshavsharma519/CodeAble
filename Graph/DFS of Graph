@@ -1,0 +1,25 @@
+class Solution {
+  public:
+  
+  void dfsRec(vector<int> adj[], int visited[], vector<int>& dfs, int s){
+      visited[s]=1;
+      dfs.push_back(s);
+      for(auto it : adj[s]){
+          if(visited[it] == false){
+              dfsRec(adj,visited,dfs,it);
+          }
+      } 
+  }
+    // Function to return a list containing the DFS traversal of the graph.
+    vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+        int visited[V] ={0};
+        vector<int> dfs;
+        for(int i =0; i<V; i++){
+            if(visited[i] == false){
+                dfsRec(adj,visited,dfs,i);
+            }
+        }
+        return dfs;
+        // Code here
+    }
+};
