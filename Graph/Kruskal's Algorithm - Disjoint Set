@@ -1,0 +1,89 @@
+class disjoint_set{
+    vector<int> rank, parent, size;
+    public:
+    
+    disjoint_set(int n) {
+        rank.resize(n, 0); // for 0 based  
+        size.resize(n, 1);
+        for(int i=0;i<n;i++) parent.push_back(i);
+    }
+        
+    int findParent(int node) { // for Finding the ultimate parent
+        if(parent[node] == node){
+            return node;
+        }
+        return parent[node] = findParent(parent[node]); // path Compression
+    }
+    
+    void union_by_rank(int u, int v){
+        int pu = findParent(u);
+        int pv = findParent(v);
+        if(rank[pu] < rank[pv]){
+            parent[pu] = pv;
+        }
+        else if(rank[pu] > rank[pv]){
+            parent[pv] = pu;
+        }
+        else{
+            parent[pv] = pu;
+                rank[pu] ++;
+        }
+    }
+        
+    void union_by_size(int u, int v) { // conneting nodes ig
+    // find ultimate  parent of u and v
+        int pu = findParent(u); // ultimate parent of u
+        int pv = findParent(v); // ultimate parent of v
+        
+        if(size[pu] < size[pv]) {
+            parent[pu] = pv; 
+            size[pv] += size[pu];
+        } 
+        else {
+            parent[pv] = pu;
+            size[pu] += size[pv];
+        }
+    }
+        
+};
+
+
+
+class Solution
+{
+	public:
+	
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        vector<pair<int,pair<int,int>>> edges(V+1);
+        
+        for(int i=0; i<V; i++){
+            for(auto it : adj[i]){
+                int adjNode = it[0];
+                int wt = it[1];
+                int node = i;
+                
+                edges.push_back({wt,{node,adjNode}});
+            }
+        }
+        
+        sort(edges.begin(),edges.end());
+        disjoint_set ds(V);
+        int mstSum =0;
+        for(auto it : edges){
+            int wt = it.first;
+            int u = it.second.first;
+            int v = it.second.second;
+            
+            
+            // If u & v belong to same component that we be not add them to the sum
+            // Otherwise if they are not in same component we will add them to the sum.
+            if(ds.findParent(u) != ds.findParent(v)){
+                mstSum += wt;
+                ds.union_by_rank(u,v);
+            }
+        }
+        return mstSum;
+    }
+};
