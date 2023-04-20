@@ -1,0 +1,111 @@
+class UnionFind{
+    int* size;
+    int* parent;
+
+public:
+    UnionFind(const int k){   // O(k)
+
+        size = new int[k + 1];
+        parent = new int[k + 1];
+
+        for(int i = 0; i <= k; i++){
+            size[i] = 1;
+            parent[i] = i;
+        }
+    }
+
+    ~UnionFind(){
+
+        delete[] size;
+        delete[] parent;
+    }
+
+    int Find(int GroupID){   // O(log* k)
+
+        if(parent[GroupID] == GroupID)
+            return GroupID;
+
+        int root = Find(parent[GroupID]);   // Continue up the tree until we reach the root.
+        parent[GroupID] = root;     // Shrink tracks.
+        return root;
+    }
+
+    void Union(int root1, int root2){    // O(1)
+
+        int smaller, bigger;
+
+        if(size[root1] < size[root2]){
+            smaller = root1;
+            bigger = root2;
+        }else{
+            smaller = root2;
+            bigger = root1;
+        }
+
+        parent[smaller] = bigger;
+        size[bigger] += size[smaller];
+        size[smaller] = 0;
+    }
+};
+
+struct Edge{
+    int point1;
+    int point2;
+    int cost;
+};
+
+struct {
+    bool operator()(const Edge& e1, const Edge& e2) const {
+        return e1.cost < e2.cost;
+    }
+} edge_comp;
+
+class Solution {
+public:
+    int minCostConnectPoints(vector<vector<int>>& points) {
+
+        const int points_size = points.size();
+        
+        vector<Edge> edges;
+
+        for(int i = 0; i < points_size - 1; i++){
+
+            for(int j = i + 1; j < points_size; j++){
+
+                int x_dist = std::abs(points[i][0] - points[j][0]);
+                int y_dist = std::abs(points[i][1] - points[j][1]);
+
+                edges.push_back({i, j, x_dist + y_dist});
+            }
+        }
+
+        std::sort(edges.begin(), edges.end(), edge_comp);
+
+
+        /* ***    KRUSKAL    *** */
+
+        int min_cost = 0;
+
+        UnionFind UF(points_size);
+
+        int num_groups = points_size;
+
+        for(Edge& edge : edges){
+
+            int group1 = UF.Find(edge.point1);
+            int group2 = UF.Find(edge.point2);
+
+            if(group1 != group2){
+
+                min_cost += edge.cost;
+
+                UF.Union(group1, group2);
+
+                if(--num_groups == 1)
+                    break;
+            }
+        }
+
+        return min_cost;
+    }
+};
